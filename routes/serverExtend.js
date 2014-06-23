@@ -22,7 +22,7 @@ exports.findAll = function(req, res) {
 };
 
 // Get data by id
-exports.getById = function(req, res) {
+app.get('data/:id', function(req, res) {
 	var id = req.params.id;
 	console.log(id);
 	collection.findById(id, function(err, result){
@@ -30,7 +30,7 @@ exports.getById = function(req, res) {
 		else if (result) res.json(result);
 		else res.json(404);
 	});
-};
+});
  
  
  
