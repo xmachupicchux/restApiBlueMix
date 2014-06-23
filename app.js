@@ -61,15 +61,23 @@ app.post('/data', function(req, res) {
 	});
 });
 
-
+// Get data by id
+app.get('data:/id', function(req, res) {
+	var id = req.params.id;
+	console.log(id);
+	db.collection('messages').findById(id, function(err, result){
+		if (err) res.json(500, err);
+		else if (result) res.json(result);
+		else res.json(404);
+	});
+});
 // Update data
 app.put('/data/:id', function(req, res) {
 	var id = req.params.id;
 	var body = req.body;
 	console.log(body);
-
 	delete body._id;
-	collection.findAndModify({_id: id}, {$set: body}, {multi:false}, function(err, result){
+	db.collection('messages').findAndModify({_id: id}, {$set: body}, {multi:false}, function(err, result){
 		if (err) res.json(500, err);
 		else if (result) res.json(result);
 		else res.json(404);
@@ -79,7 +87,7 @@ app.put('/data/:id', function(req, res) {
 // Delete data
 app.del('/data/:id', function(req, res) {
 	var id = req.params.id;
-	collection.remove({_id: id}, function(err){
+	collection('messages').remove({_id: id}, function(err){
 		if (err) res.json(500, err);
 		else res.json(204);
 	});
